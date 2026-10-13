@@ -12,12 +12,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.infyrium.icommands.utils.Colors;
 import net.infyrium.icommands.utils.ConfigUpdater;
+import net.infyrium.icommands.utils.Placeholders;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 /**
  * Messages from messages.yml in MiniMessage format. Legacy color codes work too.
+ * Placeholders in the texts are written in braces.
  */
 public class Messages {
 
@@ -48,7 +50,7 @@ public class Messages {
     }
 
     public Component get(String key, TagResolver... placeholders) {
-        return MiniMessage.miniMessage().deserialize(getRaw(key), placeholders);
+        return MiniMessage.miniMessage().deserialize(Placeholders.toTags(getRaw(key), placeholders), placeholders);
     }
 
     /**
@@ -58,7 +60,7 @@ public class Messages {
         String message = getRaw(key);
         if (message.isEmpty()) return;
 
-        sender.sendMessage(MiniMessage.miniMessage().deserialize(message, placeholders));
+        sender.sendMessage(MiniMessage.miniMessage().deserialize(Placeholders.toTags(message, placeholders), placeholders));
     }
 
     private String getRaw(String key) {
