@@ -1,1 +1,1 @@
-# mc-icommands
+# iCommands
