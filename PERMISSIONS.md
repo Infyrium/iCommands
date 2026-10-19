@@ -18,6 +18,16 @@
 | `/ext [игрок]` | — | Потушить огонь | `icommands.ext`, на другого — `icommands.ext.others` |
 | `/vanish [игрок]` | `/v` | Невидимость | `icommands.vanish`, на другого — `icommands.vanish.others` |
 | `/nick [игрок] <ник\|off>` | — | Сменить ник или вернуть свой | `icommands.nick`, на другого — `icommands.nick.others` |
+| `/tpa <игрок>` | — | Попросить телепортироваться к игроку | `icommands.tpa` |
+| `/tpahere <игрок>` | — | Позвать игрока к себе | `icommands.tpahere` |
+| `/tpaccept [игрок]` | — | Принять запрос, без ника — последний | `icommands.tpaccept` |
+| `/tpdeny [игрок]` | — | Отклонить запрос, без ника — последний | `icommands.tpdeny` |
+| `/tpacancel [игрок]` | — | Отозвать свои запросы, с ником — только к нему | `icommands.tpacancel` |
+| `/tptoggle [игрок]` | — | Не принимать запросы или принимать снова | `icommands.tptoggle`, на другого — `icommands.tptoggle.others` |
+
+Запрос ждёт ответа 60 секунд, у игрока не больше 5 запросов: новый вытесняет самый старый. Запросы только в
+памяти и только на этом сервере. Задержку перед телепортом ждёт тот, кто перемещается; движение или урон
+отменяют телепорт.
 
 ## Права
 
@@ -44,3 +54,12 @@
 | `icommands.nick` | `/nick` | операторы |
 | `icommands.nick.others` | `/nick <игрок> ...` | операторы |
 | `icommands.nick.color` | Цвета в нике | операторы |
+| `icommands.tpa` | `/tpa` | операторы |
+| `icommands.tpahere` | `/tpahere` | операторы |
+| `icommands.tpaccept` | `/tpaccept`; без него игроку нельзя отправить запрос | операторы |
+| `icommands.tpdeny` | `/tpdeny` | операторы |
+| `icommands.tpacancel` | `/tpacancel` | операторы |
+| `icommands.tptoggle` | `/tptoggle` | операторы |
+| `icommands.tptoggle.others` | `/tptoggle <игрок>` | операторы |
+| `icommands.tpa.delay.<секунды>` | Задержка перед телепортом по запросу. Если таких прав несколько, берётся наименьшее, `0` — сразу. Без права — `settings.teleportDelay` | никто |
+| `icommands.tpa.bypass.delay` | Телепорт по запросу без задержки, что бы ни давали права `icommands.tpa.delay.<секунды>` | операторы |

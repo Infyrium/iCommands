@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,11 +18,20 @@ import net.infyrium.icommands.commands.GodCommand;
 import net.infyrium.icommands.commands.HealCommand;
 import net.infyrium.icommands.commands.NickCommand;
 import net.infyrium.icommands.commands.SpeedCommand;
+import net.infyrium.icommands.commands.TpaCommand;
+import net.infyrium.icommands.commands.TpacancelCommand;
+import net.infyrium.icommands.commands.TpacceptCommand;
+import net.infyrium.icommands.commands.TpahereCommand;
+import net.infyrium.icommands.commands.TpdenyCommand;
+import net.infyrium.icommands.commands.TptoggleCommand;
 import net.infyrium.icommands.commands.VanishCommand;
 import net.infyrium.icommands.listeners.GodModeListener;
 import net.infyrium.icommands.listeners.NickListener;
+import net.infyrium.icommands.listeners.TeleportListener;
 import net.infyrium.icommands.listeners.VanishListener;
 import net.infyrium.icommands.managers.Messages;
+import net.infyrium.icommands.managers.Teleports;
+import net.infyrium.icommands.managers.TpaRequests;
 import net.infyrium.icommands.utils.ConfigUpdater;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -32,13 +42,19 @@ public class iCommandsMain extends JavaPlugin {
     // Online vanished players, safe to read from the async server list ping
     private final Set<UUID> vanishedOnline = ConcurrentHashMap.newKeySet();
 
+    private final TpaRequests tpaRequests = new TpaRequests();
+
     private Messages messages;
+
+    private Teleports teleports;
 
     private NamespacedKey godModeKey;
 
     private NamespacedKey vanishKey;
 
     private NamespacedKey nickKey;
+
+    private NamespacedKey tpToggleKey;
 
     @Override
     public void onEnable() {
@@ -51,10 +67,14 @@ public class iCommandsMain extends JavaPlugin {
         godModeKey = new NamespacedKey(this, "god");
         vanishKey = new NamespacedKey(this, "vanish");
         nickKey = new NamespacedKey(this, "nick");
+        tpToggleKey = new NamespacedKey(this, "tptoggle");
+
+        teleports = new Teleports(this, messages, "icommands.tpa.delay.", "icommands.tpa.bypass.delay");
 
         Bukkit.getPluginManager().registerEvents(new GodModeListener(this), this);
         Bukkit.getPluginManager().registerEvents(new VanishListener(this), this);
         Bukkit.getPluginManager().registerEvents(new NickListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new TeleportListener(teleports, tpaRequests), this);
 
         getCommand("feed").setExecutor(new FeedCommand(this));
         getCommand("heal").setExecutor(new HealCommand(this));
@@ -64,6 +84,12 @@ public class iCommandsMain extends JavaPlugin {
         getCommand("ext").setExecutor(new ExtCommand(this));
         getCommand("vanish").setExecutor(new VanishCommand(this));
         getCommand("nick").setExecutor(new NickCommand(this));
+        getCommand("tpa").setExecutor(new TpaCommand(this));
+        getCommand("tpahere").setExecutor(new TpahereCommand(this));
+        getCommand("tpaccept").setExecutor(new TpacceptCommand(this));
+        getCommand("tpdeny").setExecutor(new TpdenyCommand(this));
+        getCommand("tpacancel").setExecutor(new TpacancelCommand(this));
+        getCommand("tptoggle").setExecutor(new TptoggleCommand(this));
 
         // Players are already online after a plugin reload
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -79,6 +105,11 @@ public class iCommandsMain extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (teleports != null) {
+            teleports.cancelAll();
+        }
+        tpaRequests.clear();
+
         // Vanish stays saved, but players can't stay hidden by a disabled plugin
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (isVanished(player)) {
@@ -93,6 +124,30 @@ public class iCommandsMain extends JavaPlugin {
 
     public Messages getMessages() {
         return messages;
+    }
+
+    public TpaRequests getTpaRequests() {
+        return tpaRequests;
+    }
+
+    public Teleports getTeleports() {
+        return teleports;
+    }
+
+    /**
+     * Whether the command needs its permission, settings.requirePermission in config.yml.
+     */
+    public boolean requiresPermission(String command) {
+        return getConfig().getBoolean("settings.requirePermission." + command, true);
+    }
+
+    /**
+     * Checks the permission of the command and tells the sender if it is missing.
+     */
+    public boolean hasCommandPermission(CommandSender sender, String command) {
+        if (!requiresPermission(command) || sender.hasPermission("icommands." + command)) return true;
+        messages.send(sender, "no-permission");
+        return false;
     }
 
     /**
@@ -186,5 +241,20 @@ public class iCommandsMain extends JavaPlugin {
         Component name = nick == null ? null : LegacyComponentSerializer.legacyAmpersand().deserialize(nick);
         player.displayName(name);
         player.playerListName(name);
+    }
+
+    /**
+     * Teleport requests turned off with /tptoggle, stored in the player's data, so it stays after rejoin.
+     */
+    public boolean isTpToggled(Player player) {
+        return player.getPersistentDataContainer().has(tpToggleKey);
+    }
+
+    public void setTpToggled(Player player, boolean toggled) {
+        if (toggled) {
+            player.getPersistentDataContainer().set(tpToggleKey, PersistentDataType.BOOLEAN, true);
+        } else {
+            player.getPersistentDataContainer().remove(tpToggleKey);
+        }
     }
 }

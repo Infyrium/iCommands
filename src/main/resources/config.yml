@@ -1,4 +1,10 @@
 settings:
+  # Seconds to stand still before a teleport request is carried out without an icommands.tpa.delay.<seconds>
+  # permission, 0 - at once. With such permissions the lowest number counts. The one who moves waits.
+  # Moving or taking damage cancels the teleport.
+  teleportDelay: 3
+
+  # true - the command needs its permission, false - everyone can use it
   requirePermission:
     feed: true # Permissions: icommands.feed, icommands.feed.others
     heal: true # Permissions: icommands.heal, icommands.heal.others
@@ -8,5 +14,11 @@ settings:
     ext: true # Permissions: icommands.ext, icommands.ext.others
     vanish: true # Permissions: icommands.vanish, icommands.vanish.others, icommands.vanish.see, icommands.vanish.pvp, icommands.vanish.pickup
     nick: true # Permissions: icommands.nick, icommands.nick.others, icommands.nick.color
+    tpa: false # Permissions: icommands.tpa
+    tpahere: false # Permissions: icommands.tpahere
+    tpaccept: false # Permissions: icommands.tpaccept
+    tpdeny: false # Permissions: icommands.tpdeny
+    tpacancel: false # Permissions: icommands.tpacancel
+    tptoggle: false # Permissions: icommands.tptoggle, icommands.tptoggle.others
 
 configVersion: 1 # Format version of this file, do not change

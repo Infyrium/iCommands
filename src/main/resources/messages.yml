@@ -7,6 +7,7 @@
 messages:
   no-permission: "You don't have permission to use this command."
   no-permission-others: "You don't have permission to use this command on other players."
+  player-only: 'Only a player can use this command.'
   # {player}
   player-not-online: "Player '{player}' is not online."
   # {command}
@@ -61,5 +62,41 @@ messages:
   nick-invalid: "Nicknames must be alphanumeric."
   nick-too-long: "That nickname is too long."
   nick-in-use: "That name is already in use."
+
+  # Teleport requests. {player} - the other player, {seconds} - time to answer
+  tpa-self: "You can't send a teleport request to yourself."
+  tpa-disabled: '{player} does not accept teleport requests.'
+  tpa-no-accept: '{player} cannot accept teleport requests.'
+  tpa-already: 'You have already sent a teleport request to {player}.'
+  tpa-sent: 'Teleport request sent to {player}. It expires in {seconds} seconds, /tpacancel to take it back.'
+  tpahere-sent: 'Request to teleport to you sent to {player}. It expires in {seconds} seconds, /tpacancel to take it back.'
+  # Also {accept} and {deny} - the buttons below
+  tpa-received: '{player} wants to teleport to you. {accept} {deny}'
+  tpahere-received: '{player} wants you to teleport to them. {accept} {deny}'
+  # Clicking the button runs /tpaccept or /tpdeny with the name of the player
+  tpa-accept-button: '<green>[Accept]</green>'
+  tpa-deny-button: '<red>[Deny]</red>'
+  tpa-none: 'You have no teleport requests.'
+  tpa-none-from: 'You have no teleport request from {player}.'
+  tpa-accepted: 'You have accepted the teleport request of {player}.'
+  tpa-accepted-requester: '{player} has accepted your teleport request.'
+  tpa-denied: 'You have denied the teleport request of {player}.'
+  tpa-denied-requester: '{player} has denied your teleport request.'
+  tpa-cancelled: 'Your teleport request to {player} has been cancelled.'
+  tpa-cancelled-target: '{player} has cancelled their teleport request.'
+  tpa-cancel-none: 'You have no teleport requests sent.'
+  tpa-teleported: 'You have been teleported to {player}.'
+
+  tptoggle-enabled: 'You accept teleport requests again.'
+  tptoggle-enabled-other: '{player} accepts teleport requests again.'
+  tptoggle-disabled: 'You no longer accept teleport requests.'
+  tptoggle-disabled-other: '{player} no longer accepts teleport requests.'
+
+  # Teleports. {seconds}
+  teleport-delay: 'Teleporting in {seconds} seconds, do not move.'
+  teleport-cancelled: 'The teleport has been cancelled.'
+  teleport-unsafe: 'This place is not safe now.'
+  # {player}
+  teleport-target-offline: '{player} has left, the teleport has been cancelled.'
 
 configVersion: 2 # Format version of this file, do not change

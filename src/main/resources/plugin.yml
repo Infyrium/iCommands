@@ -33,6 +33,24 @@ commands:
   nick:
     description: Change nickname
     usage: /nick [player] <nickname|off>
+  tpa:
+    description: Ask to teleport to a player
+    usage: /tpa <player>
+  tpahere:
+    description: Ask a player to teleport to you
+    usage: /tpahere <player>
+  tpaccept:
+    description: Accept a teleport request
+    usage: /tpaccept [player]
+  tpdeny:
+    description: Deny a teleport request
+    usage: /tpdeny [player]
+  tpacancel:
+    description: Take back your teleport requests
+    usage: /tpacancel [player]
+  tptoggle:
+    description: Turn teleport requests on or off
+    usage: /tptoggle [player]
 permissions:
   icommands.feed:
     description: Allows using /feed
@@ -96,4 +114,28 @@ permissions:
     default: op
   icommands.nick.color:
     description: Allows using color codes in nicknames
+    default: op
+  icommands.tpa:
+    description: Allows using /tpa
+    default: op
+  icommands.tpahere:
+    description: Allows using /tpahere
+    default: op
+  icommands.tpaccept:
+    description: Allows using /tpaccept and getting teleport requests
+    default: op
+  icommands.tpdeny:
+    description: Allows using /tpdeny
+    default: op
+  icommands.tpacancel:
+    description: Allows using /tpacancel
+    default: op
+  icommands.tptoggle:
+    description: Allows using /tptoggle
+    default: op
+  icommands.tptoggle.others:
+    description: Allows using /tptoggle on other players
+    default: op
+  icommands.tpa.bypass.delay:
+    description: Teleport on an accepted request without waiting, whatever icommands.tpa.delay.<seconds> says
     default: op
