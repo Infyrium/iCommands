@@ -12,8 +12,8 @@ public class TptoggleCommand extends TargetCommand {
 
     @Override
     protected String execute(Player target) {
-        boolean toggled = !plugin.isTpToggled(target);
-        plugin.setTpToggled(target, toggled);
+        boolean toggled = !plugin.getPlayerData().isTpToggled(target);
+        plugin.getPlayerData().setTpToggled(target, toggled);
 
         return toggled ? "tptoggle-disabled" : "tptoggle-enabled";
     }

@@ -13,8 +13,8 @@ public class GodCommand extends TargetCommand {
 
     @Override
     protected String execute(Player target) {
-        boolean enabled = !plugin.isGodMode(target);
-        plugin.setGodMode(target, enabled);
+        boolean enabled = !plugin.getPlayerData().isGodMode(target);
+        plugin.getPlayerData().setGodMode(target, enabled);
 
         if (enabled && !target.isDead()) {
             target.setHealth(target.getAttribute(Attribute.MAX_HEALTH).getValue());

@@ -62,7 +62,7 @@ public class NickCommand implements CommandExecutor {
         }
 
         if (nick.equalsIgnoreCase("off")) {
-            plugin.setNick(target, null);
+            plugin.getPlayerData().setNick(target, null);
             messages.send(target, "nick-removed");
         } else {
             if (!sender.hasPermission("icommands.nick.color")) {
@@ -75,7 +75,7 @@ public class NickCommand implements CommandExecutor {
                 return true;
             }
 
-            plugin.setNick(target, nick);
+            plugin.getPlayerData().setNick(target, nick);
             messages.send(target, "nick-set", Placeholder.unparsed("nick", stripColors(nick)));
         }
 
@@ -105,7 +105,7 @@ public class NickCommand implements CommandExecutor {
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (online.equals(target)) continue;
 
-            String onlineNick = plugin.getNick(online);
+            String onlineNick = plugin.getPlayerData().getNick(online);
             if (plain.equalsIgnoreCase(online.getName())
                     || (onlineNick != null && plain.equalsIgnoreCase(stripColors(onlineNick)))) {
                 return true;

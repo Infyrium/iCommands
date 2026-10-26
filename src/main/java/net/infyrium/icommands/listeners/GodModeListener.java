@@ -22,7 +22,7 @@ public class GodModeListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player player) || !plugin.isGodMode(player)) return;
+        if (!(event.getEntity() instanceof Player player) || !plugin.getPlayerData().isGodMode(player)) return;
 
         player.setFireTicks(0);
         player.setRemainingAir(player.getMaximumAir());
@@ -31,14 +31,14 @@ public class GodModeListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onEntityCombust(EntityCombustEvent event) {
-        if (event.getEntity() instanceof Player player && plugin.isGodMode(player)) {
+        if (event.getEntity() instanceof Player player && plugin.getPlayerData().isGodMode(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        if (!(event.getEntity() instanceof Player player) || !plugin.isGodMode(player)) return;
+        if (!(event.getEntity() instanceof Player player) || !plugin.getPlayerData().isGodMode(player)) return;
 
         player.setFoodLevel(20);
         player.setSaturation(10f);
@@ -57,7 +57,7 @@ public class GodModeListener implements Listener {
             attacker = shooter;
         }
 
-        if (attacker != null && plugin.isGodMode(attacker) && !attacker.hasPermission("icommands.god.pvp")) {
+        if (attacker != null && plugin.getPlayerData().isGodMode(attacker) && !attacker.hasPermission("icommands.god.pvp")) {
             event.setCancelled(true);
         }
     }

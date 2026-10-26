@@ -16,6 +16,6 @@ public class NickListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        plugin.applyNick(event.getPlayer());
+        plugin.getPlayerData().applyNick(event.getPlayer());
     }
 }

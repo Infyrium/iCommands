@@ -1,6 +1,7 @@
 package net.infyrium.icommands.commands;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -121,7 +122,7 @@ public class SpeedCommand implements TabExecutor {
     }
 
     private static Boolean parseType(String type) {
-        type = type.toLowerCase();
+        type = type.toLowerCase(Locale.ROOT);
         if (type.contains("fly") || type.equals("f")) return true;
         if (type.contains("walk") || type.contains("run") || type.equals("w") || type.equals("r")) return false;
         return null;
@@ -166,6 +167,6 @@ public class SpeedCommand implements TabExecutor {
     }
 
     private static List<String> filter(List<String> options, String input) {
-        return options.stream().filter(option -> option.toLowerCase().startsWith(input.toLowerCase())).toList();
+        return options.stream().filter(option -> option.toLowerCase(Locale.ROOT).startsWith(input.toLowerCase(Locale.ROOT))).toList();
     }
 }

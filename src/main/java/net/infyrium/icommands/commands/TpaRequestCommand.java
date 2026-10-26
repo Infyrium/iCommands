@@ -54,7 +54,7 @@ public abstract class TpaRequestCommand implements CommandExecutor {
             return true;
         }
 
-        if (plugin.isTpToggled(target)) {
+        if (plugin.getPlayerData().isTpToggled(target)) {
             messages.send(player, "tpa-disabled", Placeholder.unparsed("player", target.getName()));
             return true;
         }

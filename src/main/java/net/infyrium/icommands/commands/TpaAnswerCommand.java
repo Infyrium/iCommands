@@ -43,7 +43,7 @@ public abstract class TpaAnswerCommand implements TabExecutor {
         Player from = null;
         if (args.length > 0) {
             from = Bukkit.getPlayerExact(args[0]);
-            if (from == null) {
+            if (from == null || !player.canSee(from)) {
                 messages.send(player, "tpa-none-from", Placeholder.unparsed("player", args[0]));
                 return true;
             }

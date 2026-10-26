@@ -58,16 +58,16 @@ public class VanishListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (plugin.isVanished(player)) {
+        if (plugin.getPlayerData().isVanished(player)) {
             event.joinMessage(null);
-            plugin.applyVanish(player);
+            plugin.getPlayerData().applyVanish(player);
             plugin.getMessages().send(player, "vanish-still");
         }
 
         if (player.hasPermission("icommands.vanish.see")) return;
 
         for (Player online : Bukkit.getOnlinePlayers()) {
-            if (!online.equals(player) && plugin.isVanished(online)) {
+            if (!online.equals(player) && plugin.getPlayerData().isVanished(online)) {
                 player.hidePlayer(plugin, online);
             }
         }
@@ -84,22 +84,22 @@ public class VanishListener implements Listener {
             restore.run();
         }
 
-        if (plugin.isVanished(player)) {
+        if (plugin.getPlayerData().isVanished(player)) {
             event.quitMessage(null);
-            plugin.getVanishedOnline().remove(player.getUniqueId());
+            plugin.getPlayerData().getVanishedOnline().remove(player.getUniqueId());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (plugin.isVanished(event.getPlayer())) {
+        if (plugin.getPlayerData().isVanished(event.getPlayer())) {
             event.deathMessage(null);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
-        if (plugin.isVanished(event.getPlayer())) {
+        if (plugin.getPlayerData().isVanished(event.getPlayer())) {
             event.message(null);
         }
     }
@@ -107,7 +107,7 @@ public class VanishListener implements Listener {
     // Vanished players are not counted or listed in the server list
     @EventHandler
     public void onServerListPing(PaperServerListPingEvent event) {
-        Set<UUID> vanished = plugin.getVanishedOnline();
+        Set<UUID> vanished = plugin.getPlayerData().getVanishedOnline();
         if (vanished.isEmpty()) return;
 
         event.setNumPlayers(Math.max(0, event.getNumPlayers() - vanished.size()));
@@ -136,19 +136,19 @@ public class VanishListener implements Listener {
     }
 
     private boolean cantPickup(Player player) {
-        return plugin.isVanished(player) && !player.hasPermission("icommands.vanish.pickup");
+        return plugin.getPlayerData().isVanished(player) && !player.hasPermission("icommands.vanish.pickup");
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
-        if (event.getTarget() instanceof Player player && plugin.isVanished(player)) {
+        if (event.getTarget() instanceof Player player && plugin.getPlayerData().isVanished(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockReceiveGame(BlockReceiveGameEvent event) {
-        if (event.getEntity() instanceof Player player && plugin.isVanished(player)) {
+        if (event.getEntity() instanceof Player player && plugin.getPlayerData().isVanished(player)) {
             event.setCancelled(true);
         }
     }
@@ -156,7 +156,7 @@ public class VanishListener implements Listener {
     // Arrows, snowballs and other projectiles fly through vanished players
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onProjectileHit(ProjectileHitEvent event) {
-        if (event.getHitEntity() instanceof Player player && plugin.isVanished(player)) {
+        if (event.getHitEntity() instanceof Player player && plugin.getPlayerData().isVanished(player)) {
             event.setCancelled(true);
         }
     }
@@ -173,7 +173,7 @@ public class VanishListener implements Listener {
             attacker = shooter;
         }
 
-        if (attacker != null && plugin.isVanished(attacker) && !attacker.hasPermission("icommands.vanish.pvp")) {
+        if (attacker != null && plugin.getPlayerData().isVanished(attacker) && !attacker.hasPermission("icommands.vanish.pvp")) {
             event.setCancelled(true);
         }
     }
@@ -181,7 +181,7 @@ public class VanishListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (!plugin.isVanished(player)) return;
+        if (!plugin.getPlayerData().isVanished(player)) return;
 
         // Pressure plates, tripwires, farmland
         if (event.getAction() == Action.PHYSICAL) {

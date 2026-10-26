@@ -12,8 +12,8 @@ public class VanishCommand extends TargetCommand {
 
     @Override
     protected String execute(Player target) {
-        boolean enabled = !plugin.isVanished(target);
-        plugin.setVanished(target, enabled);
+        boolean enabled = !plugin.getPlayerData().isVanished(target);
+        plugin.getPlayerData().setVanished(target, enabled);
 
         return enabled ? "vanish-enabled" : "vanish-disabled";
     }
