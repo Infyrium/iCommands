@@ -135,26 +135,6 @@ public class Teleports {
         pending.clear();
     }
 
-    private void teleport(Player player, Player target, String doneKey, TagResolver... placeholders) {
-        if (!target.isOnline()) {
-            messages.send(player, "teleport-target-offline", Placeholder.unparsed("player", target.getName()));
-            return;
-        }
-
-        // The world and the chunk of an online player are loaded
-        Location location = target.getLocation();
-        if (!isSafe(location)) {
-            messages.send(player, "teleport-unsafe");
-            return;
-        }
-        // A cancelled teleport is explained by whoever cancelled it
-        player.teleportAsync(location, TeleportCause.COMMAND).thenAccept(done -> {
-            if (done && player.isOnline()) {
-                messages.send(player, doneKey, placeholders);
-            }
-        });
-    }
-
     /**
      * Not into lava or fire, not into a wall, and with ground or water close under the feet.
      */
@@ -175,5 +155,25 @@ public class Teleports {
             if (below.getType() == Material.WATER || !below.isPassable()) return true;
         }
         return false;
+    }
+
+    private void teleport(Player player, Player target, String doneKey, TagResolver... placeholders) {
+        if (!target.isOnline()) {
+            messages.send(player, "teleport-target-offline", Placeholder.unparsed("player", target.getName()));
+            return;
+        }
+
+        // The world and the chunk of an online player are loaded
+        Location location = target.getLocation();
+        if (!isSafe(location)) {
+            messages.send(player, "teleport-unsafe");
+            return;
+        }
+        // A cancelled teleport is explained by whoever cancelled it
+        player.teleportAsync(location, TeleportCause.COMMAND).thenAccept(done -> {
+            if (done && player.isOnline()) {
+                messages.send(player, doneKey, placeholders);
+            }
+        });
     }
 }

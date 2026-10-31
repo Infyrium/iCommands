@@ -1,19 +1,22 @@
 package net.infyrium.icommands.commands;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import net.infyrium.icommands.iCommandsMain;
 import net.infyrium.icommands.managers.Messages;
+import net.infyrium.icommands.utils.Completions;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 /**
  * Base for commands used as /command or /command [player].
  */
-public abstract class TargetCommand implements CommandExecutor {
+public abstract class TargetCommand implements TabExecutor {
 
     protected final iCommandsMain plugin;
 
@@ -68,5 +71,11 @@ public abstract class TargetCommand implements CommandExecutor {
             messages.send(sender, key + "-other", Placeholder.unparsed("player", target.getName()));
         }
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        return args.length == 1 && sender.hasPermission(permission + ".others")
+                ? Completions.players(sender, args[0]) : List.of();
     }
 }

@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 
 import net.infyrium.icommands.iCommandsMain;
 
+/**
+ * /fly: toggles flight.
+ */
 public class FlyCommand extends TargetCommand {
 
     public FlyCommand(iCommandsMain plugin) {

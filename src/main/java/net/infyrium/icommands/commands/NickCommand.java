@@ -1,19 +1,24 @@
 package net.infyrium.icommands.commands;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import net.infyrium.icommands.iCommandsMain;
 import net.infyrium.icommands.managers.Messages;
+import net.infyrium.icommands.utils.Completions;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
-public class NickCommand implements CommandExecutor {
+/**
+ * /nick: changes or resets the display name of a player.
+ */
+public class NickCommand implements TabExecutor {
 
     private static final Pattern COLOR_CODES = Pattern.compile("&[0-9a-fk-orA-FK-OR]");
 
@@ -35,7 +40,7 @@ public class NickCommand implements CommandExecutor {
 
         if (args.length == 1) {
             if (!(sender instanceof Player player)) {
-                messages.send(sender, "nick-usage-console", Placeholder.unparsed("command", label));
+                messages.send(sender, "usage-nick-console", Placeholder.unparsed("command", label));
                 return true;
             }
             if (plugin.getConfig().getBoolean("settings.requirePermission.nick", true)
@@ -57,7 +62,7 @@ public class NickCommand implements CommandExecutor {
             }
             nick = args[1];
         } else {
-            messages.send(sender, "nick-usage", Placeholder.unparsed("command", label));
+            messages.send(sender, "usage-nick", Placeholder.unparsed("command", label));
             return true;
         }
 
@@ -83,6 +88,12 @@ public class NickCommand implements CommandExecutor {
             messages.send(sender, "nick-changed");
         }
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        return args.length == 1 && sender.hasPermission("icommands.nick.others")
+                ? Completions.players(sender, args[0]) : List.of();
     }
 
     // Returns the message key of the error, or null if the nickname is fine

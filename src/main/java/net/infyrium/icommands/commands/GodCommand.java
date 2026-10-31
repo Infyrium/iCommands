@@ -5,6 +5,9 @@ import org.bukkit.entity.Player;
 
 import net.infyrium.icommands.iCommandsMain;
 
+/**
+ * /god: toggles invulnerability.
+ */
 public class GodCommand extends TargetCommand {
 
     public GodCommand(iCommandsMain plugin) {

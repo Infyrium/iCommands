@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 
 import net.infyrium.icommands.iCommandsMain;
 
+/**
+ * /feed: feeds a player.
+ */
 public class FeedCommand extends TargetCommand {
 
     public FeedCommand(iCommandsMain plugin) {

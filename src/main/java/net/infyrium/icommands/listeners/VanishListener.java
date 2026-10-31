@@ -135,10 +135,6 @@ public class VanishListener implements Listener {
         }
     }
 
-    private boolean cantPickup(Player player) {
-        return plugin.getPlayerData().isVanished(player) && !player.hasPermission("icommands.vanish.pickup");
-    }
-
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         if (event.getTarget() instanceof Player player && plugin.getPlayerData().isVanished(player)) {
@@ -227,6 +223,10 @@ public class VanishListener implements Listener {
                 restore.run();
             }
         });
+    }
+
+    private boolean cantPickup(Player player) {
+        return plugin.getPlayerData().isVanished(player) && !player.hasPermission("icommands.vanish.pickup");
     }
 
     /**

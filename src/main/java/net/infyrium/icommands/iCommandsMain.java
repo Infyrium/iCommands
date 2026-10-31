@@ -1,7 +1,11 @@
 package net.infyrium.icommands;
 
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,25 +55,33 @@ public class iCommandsMain extends JavaPlugin {
 
         teleports = new Teleports(this, messages, "icommands.tpa.delay.", "icommands.tpa.bypass.delay");
 
-        Bukkit.getPluginManager().registerEvents(new GodModeListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new VanishListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new NickListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new TeleportListener(teleports, tpaRequests), this);
+        getServer().getPluginManager().registerEvents(new GodModeListener(this), this);
+        getServer().getPluginManager().registerEvents(new VanishListener(this), this);
+        getServer().getPluginManager().registerEvents(new NickListener(this), this);
+        getServer().getPluginManager().registerEvents(new TeleportListener(teleports, tpaRequests), this);
 
-        getCommand("feed").setExecutor(new FeedCommand(this));
-        getCommand("heal").setExecutor(new HealCommand(this));
-        getCommand("fly").setExecutor(new FlyCommand(this));
-        getCommand("speed").setExecutor(new SpeedCommand(this));
-        getCommand("god").setExecutor(new GodCommand(this));
-        getCommand("ext").setExecutor(new ExtCommand(this));
-        getCommand("vanish").setExecutor(new VanishCommand(this));
-        getCommand("nick").setExecutor(new NickCommand(this));
-        getCommand("tpa").setExecutor(new TpaCommand(this));
-        getCommand("tpahere").setExecutor(new TpahereCommand(this));
-        getCommand("tpaccept").setExecutor(new TpacceptCommand(this));
-        getCommand("tpdeny").setExecutor(new TpdenyCommand(this));
-        getCommand("tpacancel").setExecutor(new TpacancelCommand(this));
-        getCommand("tptoggle").setExecutor(new TptoggleCommand(this));
+        Map<String, TabExecutor> commands = Map.ofEntries(
+                Map.entry("feed", new FeedCommand(this)),
+                Map.entry("heal", new HealCommand(this)),
+                Map.entry("fly", new FlyCommand(this)),
+                Map.entry("speed", new SpeedCommand(this)),
+                Map.entry("god", new GodCommand(this)),
+                Map.entry("ext", new ExtCommand(this)),
+                Map.entry("vanish", new VanishCommand(this)),
+                Map.entry("nick", new NickCommand(this)),
+                Map.entry("tpa", new TpaCommand(this)),
+                Map.entry("tpahere", new TpahereCommand(this)),
+                Map.entry("tpaccept", new TpacceptCommand(this)),
+                Map.entry("tpdeny", new TpdenyCommand(this)),
+                Map.entry("tpacancel", new TpacancelCommand(this)),
+                Map.entry("tptoggle", new TptoggleCommand(this)));
+        for (Map.Entry<String, TabExecutor> entry : commands.entrySet()) {
+            PluginCommand command = getCommand(entry.getKey());
+            if (command != null) {
+                command.setExecutor(entry.getValue());
+                command.setTabCompleter(entry.getValue());
+            }
+        }
 
         // Players are already online after a plugin reload
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -102,18 +114,6 @@ public class iCommandsMain extends JavaPlugin {
         getLogger().info("Plugin has been disabled!");
     }
 
-    public Messages getMessages() {
-        return messages;
-    }
-
-    public TpaRequests getTpaRequests() {
-        return tpaRequests;
-    }
-
-    public Teleports getTeleports() {
-        return teleports;
-    }
-
     /**
      * Whether the command needs its permission, settings.requirePermission in config.yml.
      */
@@ -128,6 +128,18 @@ public class iCommandsMain extends JavaPlugin {
         if (!requiresPermission(command) || sender.hasPermission("icommands." + command)) return true;
         messages.send(sender, "no-permission");
         return false;
+    }
+
+    public TpaRequests getTpaRequests() {
+        return tpaRequests;
+    }
+
+    public Messages getMessages() {
+        return messages;
+    }
+
+    public Teleports getTeleports() {
+        return teleports;
     }
 
     public PlayerData getPlayerData() {

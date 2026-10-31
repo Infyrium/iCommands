@@ -5,11 +5,11 @@
 # An empty message ('') is not sent.
 
 messages:
-  no-permission: "You don't have permission to use this command."
-  no-permission-others: "You don't have permission to use this command on other players."
+  no-permission: 'You do not have permission to do this.'
+  no-permission-others: 'You do not have permission to do this to other players.'
   player-only: 'Only a player can use this command.'
   # {player}
-  player-not-online: "Player '{player}' is not online."
+  player-not-online: 'Player {player} is not online.'
   # {command}
   usage-player: 'Usage: /{command} <player>'
 
@@ -44,7 +44,7 @@ messages:
   vanish-still: "You are still vanished."
 
   # {command}
-  speed-usage: 'Usage: /{command} [fly|walk] <0-10> [player]'
+  usage-speed: 'Usage: /{command} [fly|walk] <0-10> [player]'
   # {speed}
   speed-fly: "Fly speed set to {speed}!"
   speed-walk: "Walk speed set to {speed}!"
@@ -53,8 +53,8 @@ messages:
   speed-walk-other: "Walk speed set to {speed} for {player}!"
 
   # {command}
-  nick-usage: 'Usage: /{command} [player] <nickname|off>'
-  nick-usage-console: 'Usage: /{command} <player> <nickname|off>'
+  usage-nick: 'Usage: /{command} [player] <nickname|off>'
+  usage-nick-console: 'Usage: /{command} <player> <nickname|off>'
   # {nick}
   nick-set: "Your nickname is now {nick}."
   nick-removed: "You no longer have a nickname."
@@ -74,8 +74,8 @@ messages:
   tpa-received: '{player} wants to teleport to you. {accept} {deny}'
   tpahere-received: '{player} wants you to teleport to them. {accept} {deny}'
   # Clicking the button runs /tpaccept or /tpdeny with the name of the player
-  tpa-accept-button: '<green>[Accept]</green>'
-  tpa-deny-button: '<red>[Deny]</red>'
+  tpa-accept-button: '[Accept]'
+  tpa-deny-button: '[Deny]'
   tpa-none: 'You have no teleport requests.'
   tpa-none-from: 'You have no teleport request from {player}.'
   tpa-accepted: 'You have accepted the teleport request of {player}.'
@@ -99,4 +99,4 @@ messages:
   # {player}
   teleport-target-offline: '{player} has left, the teleport has been cancelled.'
 
-configVersion: 2 # Format version of this file, do not change
+configVersion: 1 # Format version of this file, do not change

@@ -6,6 +6,9 @@ import org.bukkit.potion.PotionEffect;
 
 import net.infyrium.icommands.iCommandsMain;
 
+/**
+ * /heal: heals a player.
+ */
 public class HealCommand extends TargetCommand {
 
     public HealCommand(iCommandsMain plugin) {

@@ -14,6 +14,9 @@ import net.infyrium.icommands.managers.Messages;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
+/**
+ * /speed: sets the walk or fly speed of a player.
+ */
 public class SpeedCommand implements TabExecutor {
 
     private static final List<String> TYPES = List.of("walk", "fly", "1", "1.5", "1.75", "2");
@@ -40,14 +43,14 @@ public class SpeedCommand implements TabExecutor {
         // /speed <speed> picks the type by whether the player is flying
         if (args.length == 1) {
             if (!(sender instanceof Player player)) {
-                messages.send(sender, "speed-usage", usage);
+                messages.send(sender, "usage-speed", usage);
                 return true;
             }
             if (!hasPermission(player)) return true;
 
             Float speed = parseSpeed(args[0]);
             if (speed == null) {
-                messages.send(player, "speed-usage", usage);
+                messages.send(player, "usage-speed", usage);
                 return true;
             }
             setSpeed(player, player.isFlying(), speed);
@@ -56,14 +59,14 @@ public class SpeedCommand implements TabExecutor {
         }
 
         if (args.length < 2 || args.length > 3) {
-            messages.send(sender, "speed-usage", usage);
+            messages.send(sender, "usage-speed", usage);
             return true;
         }
 
         Boolean fly = parseType(args[0]);
         Float speed = parseSpeed(args[1]);
         if (fly == null || speed == null) {
-            messages.send(sender, "speed-usage", usage);
+            messages.send(sender, "usage-speed", usage);
             return true;
         }
 
@@ -86,7 +89,7 @@ public class SpeedCommand implements TabExecutor {
         }
 
         if (!(sender instanceof Player player)) {
-            messages.send(sender, "speed-usage", usage);
+            messages.send(sender, "usage-speed", usage);
             return true;
         }
         if (!hasPermission(player)) return true;

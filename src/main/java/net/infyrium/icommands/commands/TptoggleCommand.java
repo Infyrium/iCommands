@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 
 import net.infyrium.icommands.iCommandsMain;
 
+/**
+ * /tptoggle: toggles teleport requests.
+ */
 public class TptoggleCommand extends TargetCommand {
 
     public TptoggleCommand(iCommandsMain plugin) {

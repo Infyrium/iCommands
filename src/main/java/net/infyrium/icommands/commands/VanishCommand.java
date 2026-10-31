@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 
 import net.infyrium.icommands.iCommandsMain;
 
+/**
+ * /vanish: toggles visibility.
+ */
 public class VanishCommand extends TargetCommand {
 
     public VanishCommand(iCommandsMain plugin) {

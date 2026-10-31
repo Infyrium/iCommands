@@ -1,3 +1,6 @@
+# iCommands - simple commands of players and admins: /feed, /heal, /fly, /speed, /god, /ext, /vanish, /nick and
+# teleport requests /tpa, /tpahere, /tpaccept, /tpdeny, /tpacancel, /tptoggle.
+
 settings:
   # Seconds to stand still before a teleport request is carried out without an icommands.tpa.delay.<seconds>
   # permission, 0 - at once. With such permissions the lowest number counts. The one who moves waits.
